@@ -1,0 +1,352 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project | Ultrasound 3D Reconstruction</title>
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+
+<header class="site-header" id="header">
+    <div class="header-container">
+        <a class="brand" href="../index.html">
+            <span class="brand-name">Nguyen Le</span>
+            <span class="brand-subtitle">Automation and Electrical Engineering Student @ Aalto University</span>
+        </a>
+
+        <nav class="navbar" aria-label="Main navigation">
+            <a href="../index.html">Home</a>
+            <a href="../background.html">Background</a>
+            <a href="../projects.html">Projects</a>
+            <a href="../index.html#contact">Contact</a>
+        </nav>
+    </div>
+</header>
+
+<main>
+
+    <section class="article-hero">
+        <div class="article-background">
+            <img
+                src="../assets/images/spider_2Dmask_v2.png"
+                alt="Spider ultrasound reconstruction, showing the original object, reconstructed mesh and fabricated mould"
+            >
+        </div>
+        <div class="article-overlay"></div>
+
+        <div class="article-hero-content">
+            <p class="eyebrow">MEDICAL IMAGING · BACHELOR'S THESIS · 2025–2026</p>
+            <h1>Development and Evaluation of a 2D Freehand Ultrasound to 3D Phantom Pipeline</h1>
+            <p class="lead">
+                A proof-of-concept pipeline for turning freehand 2D
+                ultrasound scans into 3D digital models and physical
+                gelatin phantoms.
+            </p>
+        </div>
+    </section>
+
+    <article class="article-content">
+
+        <p class="article-meta">
+            Aalto University · Bachelor's Thesis · October 2025–June 2026
+        </p>
+
+        <section>
+            <h2>Overview</h2>
+
+            <p>
+                For my bachelor's thesis, I set out to answer a fairly
+                straightforward question: can freehand 2D ultrasound
+                images be used to create 3D models and, eventually,
+                physical objects?
+            </p>
+
+            <p>
+                Ultrasound is relatively inexpensive, portable, and
+                widely available. Unlike CT, it also does not use
+                ionising radiation. The trade-off is that its images
+                can be difficult to work with. Speckle noise, shadows,
+                attenuation, and low contrast make it harder to extract
+                clean geometry.
+            </p>
+
+            <p>
+                I wanted to see whether I could put together a complete
+                workflow using accessible tools, without specialised
+                positional tracking hardware or large machine-learning
+                datasets. The result was a pipeline that takes
+                ultrasound video, processes it into 3D models, and
+                uses those models to produce physical phantom samples.
+            </p>
+        </section>
+
+        <section>
+            <h2>The Pipeline</h2>
+
+            <p>
+                The process starts with a short freehand ultrasound
+                video. From there, the frames are extracted and cleaned,
+                the object is segmented, and the resulting masks are
+                stacked into a 3D volume. A surface mesh is then
+                extracted and prepared for CAD and fabrication.
+            </p>
+
+            <p>
+                In short, the workflow goes from 2D images to a 3D
+                volume, then to a mesh, and finally to a physical
+                object.
+            </p>
+        </section>
+
+        <section>
+            <h2>Image Processing and Segmentation</h2>
+
+            <p>
+                I used a clinical B-mode ultrasound system with a
+                linear transducer to scan five different objects:
+                a cube, sphere, horse, spider, and dinosaur. Each
+                object was embedded in a gelatin-based phantom
+                containing psyllium husk to introduce speckle-like
+                texture.
+            </p>
+
+            <p>
+                The scans were recorded as short videos while moving
+                the probe by hand in different directions. I then
+                split the videos into individual frames, cropped
+                away the ultrasound interface, and removed blank
+                or irrelevant frames.
+            </p>
+
+            <figure class="article-media">
+                <img
+                    src="../assets/images/cube_2Dmask_v2.png"
+                    alt="Cube ultrasound segmentation results, showing original ultrasound frames beside transparent red mask overlays"
+                >
+                <figcaption>
+                    Representative cube ultrasound frames. The original
+                    images are shown on the left, with the generated
+                    segmentation masks overlaid in transparent red on
+                    the right.
+                </figcaption>
+            </figure>
+
+            <p>
+                Separating the object from the surrounding material
+                was one of the more challenging parts. I experimented
+                with Gaussian and median filtering to reduce noise,
+                followed by intensity thresholding to isolate the
+                object. Morphological operations were then used to
+                clean up the masks and close small gaps.
+            </p>
+
+            <p>
+                The cube was a good starting point because its strong
+                contrast and simple geometry made segmentation
+                relatively reliable. Other objects required more
+                adjustment, particularly when their surfaces were
+                curved or their features were thin.
+            </p>
+        </section>
+
+        <section>
+            <h2>From 2D Images to 3D Models</h2>
+
+            <p>
+                Once the masks were ready, I stacked them into
+                three-dimensional voxel volumes. Since the scans
+                were performed freehand, I did not have an exact
+                record of the probe's position between frames.
+                Instead, slice spacing was estimated using
+                calibration objects of known dimensions.
+            </p>
+
+            <p>
+                I applied volumetric smoothing to reduce noise and
+                extracted the surface meshes using the Marching
+                Cubes algorithm. The meshes were then cleaned up
+                and smoothed before being exported for further use.
+            </p>
+
+            <figure class="article-media">
+                <img
+                    src="../assets/images/spider-stages.png"
+                    alt="Spider reconstruction results showing the original object, reconstructed 3D mesh and fabricated mould"
+                >
+                <figcaption>
+                    Spider reconstruction results: (a) original spider,
+                    (b) reconstructed 3D mesh, and (c) fabricated mould.
+                </figcaption>
+            </figure>
+
+            <p>
+                The spider was one of the more challenging objects
+                to reconstruct. Its thin, flexible legs produced
+                weaker ultrasound reflections, so some of the finer
+                structures were lost during segmentation. The
+                reconstructed mesh still retained the main body
+                and general limb structure, but with less detail
+                than the original.
+            </p>
+        </section>
+
+        <section>
+            <h2>Making It Physical</h2>
+
+            <p>
+                I also wanted to take the reconstruction one step
+                further. Rather than stopping at a digital model,
+                I used the geometry to design negative moulds in CAD.
+                These were 3D printed in PLA and used to cast
+                gelatin-based phantoms.
+            </p>
+
+            <figure class="article-media">
+                <img
+                    src="../assets/images/cube-stages.png"
+                    alt="Four stages of the cube pipeline: original cube, reconstructed 3D mesh, 3D-printed mould and finished gelatin phantom"
+                >
+                <figcaption>
+                    Cube reconstruction results: (a) original cube,
+                    (b) reconstructed 3D mesh, (c) fabricated mould,
+                    and (d) gelatin phantom created from the mould.
+                </figcaption>
+            </figure>
+
+            <p>
+                The cube was carried through the complete workflow,
+                from the original object to the finished phantom.
+                It served as a useful baseline because its flat
+                surfaces and clear edges made it easier to evaluate
+                the reconstruction. The resulting mesh stayed close
+                to the original 20 × 20 mm dimensions, and the
+                physical phantom preserved its overall shape well.
+            </p>
+        </section>
+
+        <section>
+            <h2>Testing Different Geometries</h2>
+
+            <p>
+                I tested the pipeline on five objects with different
+                shapes and levels of detail. Each one brought its
+                own problems, and the results were quite different.
+            </p>
+
+            <div class="article-gallery">
+
+                <figure class="article-media">
+                    <img
+                        src="../assets/images/sphere_3D_v2.png"
+                        alt="Reconstructed 3D sphere model"
+                    >
+                    <figcaption>
+                        <strong>Sphere.</strong>
+                        Inconsistent reflections along the curved
+                        surface caused some segmentation loss and
+                        flattening in the reconstructed mesh.
+                    </figcaption>
+                </figure>
+
+                <figure class="article-media">
+                    <img
+                        src="../assets/images/horse_3D_v2.png"
+                        alt="Reconstructed 3D horse model"
+                    >
+                    <figcaption>
+                        <strong>Horse.</strong>
+                        The main body and limbs were retained, although
+                        some finer details were lost due to lower
+                        contrast and resolution.
+                    </figcaption>
+                </figure>
+
+                <figure class="article-media">
+                    <img
+                        src="../assets/images/dino_3D_v2.png"
+                        alt="Reconstructed 3D dinosaur model"
+                    >
+                    <figcaption>
+                        <strong>Dinosaur.</strong>
+                        Strong contrast allowed more detailed
+                        segmentation of the limbs, claws, and
+                        other surface features.
+                    </figcaption>
+                </figure>
+
+            </div>
+
+            <p>
+                Looking across all five objects, a pattern emerged.
+                Simple shapes and strong ultrasound contrast
+                generally produced better results. Curved surfaces
+                and thin structures were harder to capture, while
+                objects with clearer reflections retained more
+                of their finer details.
+            </p>
+        </section>
+
+        <section>
+            <h2>Limitations and Takeaways</h2>
+
+            <p>
+                The biggest limitation was the lack of positional
+                tracking. Since the probe was moved by hand, the
+                exact position and orientation of each frame were
+                unknown. Estimating slice spacing helped with
+                physical scaling, but could not fully account for
+                variations in scanning speed or alignment.
+            </p>
+
+            <p>
+                Segmentation was another source of uncertainty.
+                Different objects needed different parameter
+                adjustments, and mistakes in the masks carried
+                through to the reconstructed volume and final mesh.
+                Variations in the phantom material and sample
+                preparation also affected the results.
+            </p>
+
+            <p>
+                Despite these limitations, the pipeline demonstrated
+                that it is possible to go from freehand ultrasound
+                images to 3D digital models and physical phantoms
+                using relatively accessible tools. It is not a
+                finished medical imaging system, but it provides
+                a useful starting point for further work.
+            </p>
+        </section>
+
+        <section>
+            <h2>Technologies and Tools</h2>
+
+            <p>
+                Python · Ultrasound Imaging · Image Processing ·
+                Gaussian and Median Filtering · Intensity Thresholding ·
+                Morphological Operations · Binary Segmentation ·
+                Voxel Reconstruction · Marching Cubes · Mesh Processing ·
+                CAD · 3D Printing
+            </p>
+        </section>
+
+        <div class="article-end">
+            <a href="../projects.html" class="button">Back to Projects</a>
+            <a href="../index.html#contact" class="text-link">Get in Touch →</a>
+        </div>
+
+    </article>
+
+</main>
+
+<footer class="site-footer">
+    <div class="footer-container">
+        <span>© <span data-year></span> Nguyen Le</span>
+        <a href="#">Go to top ↑</a>
+    </div>
+</footer>
+
+<script src="../script.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,420 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="description" content="A low-power BLE shunt battery monitoring system developed during an embedded electronics engineering internship at Cristec.">
+
+    <title>Project | Low-Power BLE Battery Monitor</title>
+
+    <link rel="stylesheet" href="../style.css">
+    <script src="../script.js" defer></script>
+</head>
+
+<body id="top">
+
+    <!-- HEADER -->
+
+    <header class="site-header" id="header">
+        <div class="header-container">
+
+            <a href="../index.html" class="brand">
+                <span class="brand-name">Nguyen Le</span>
+                <span class="brand-subtitle">
+                    Automation and Electrical Engineering Student @ Aalto University
+                </span>
+            </a>
+
+            <nav class="navbar" aria-label="Main navigation">
+                <a href="../index.html">Home</a>
+                <a href="../background.html">Background</a>
+                <a href="../projects.html" class="active">Projects</a>
+                <a href="../index.html#contact">Contact</a>
+            </nav>
+
+        </div>
+    </header>
+
+
+    <main>
+
+        <!-- PROJECT HEADER -->
+
+        <section class="article-hero">
+
+            <img
+                src="../assets/images/battery-monitor-bench.jpg"
+                alt="Battery monitoring electronics and laboratory workbench"
+                class="article-background"
+            >
+
+            <div class="article-overlay"></div>
+
+            <div class="article-hero-content">
+
+                <a href="../projects.html" class="back-link">
+                    ← All Projects
+                </a>
+
+                <p class="eyebrow">
+                    EMBEDDED ELECTRONICS · INTERNSHIP · 2026
+                </p>
+
+                <h1>
+                    Low-Power BLE Shunt Battery Monitor
+                </h1>
+
+                <p class="lead">
+                    A battery current monitoring system built around
+                    an ESP32, precision ADC, and custom analogue
+                    measurement circuitry.
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <!-- PROJECT ARTICLE -->
+
+        <article class="article-content">
+
+
+            <!-- OVERVIEW -->
+
+            <section>
+
+                <p class="article-meta">
+                    Cristec · Châteaulin, France · June–August 2026
+                </p>
+
+                <h2>Overview</h2>
+
+                <p>
+                    During my summer internship at Cristec, I worked on
+                    developing a low-power battery current monitoring
+                    system. The idea was fairly straightforward: measure
+                    current through an external shunt resistor and send
+                    the readings wirelessly over Bluetooth Low Energy
+                    (BLE), with CAN communication also incorporated
+                    into the system.
+                </p>
+
+                <p>
+                    I got to work on quite a bit of the development
+                    process, from selecting components and putting
+                    together the first breadboard prototype to designing
+                    the PCB, writing firmware, and testing the electronics.
+                    I also worked on a 3D-printed enclosure for the device.
+                </p>
+
+            </section>
+
+
+            <!-- HARDWARE DEVELOPMENT -->
+
+            <section>
+
+                <h2>Hardware Development</h2>
+
+                <p>
+                    I started by looking into different ESP32 platforms,
+                    Bluetooth stacks, and component options. After
+                    comparing the available alternatives, I settled on
+                    a platform that fitted the project's requirements
+                    and the company's existing development environment.
+                </p>
+
+                <p>
+                    The analogue front-end was built around an MCP3561
+                    precision ADC, communicating with the microcontroller
+                    over SPI. The surrounding circuitry included an
+                    external voltage reference, voltage divider,
+                    LC filtering, decoupling, and a 32.768 kHz crystal.
+                </p>
+
+                <figure class="article-media">
+
+                    <img
+                        src="../assets/images/battery-monitor-breadboard.jpg"
+                        alt="Breadboard prototype of the battery monitoring circuit"
+                        loading="lazy"
+                    >
+
+                    <figcaption>
+                        The first iteration of the measurement circuitry,
+                        assembled on a breadboard.
+                    </figcaption>
+
+                </figure>
+
+                <p>
+                    I first put together the circuit on a breadboard
+                    to get the different components working together
+                    before moving on to a proper PCB. Once the basic
+                    setup was working, I designed a compact two-layer
+                    board in Altium Designer.
+                </p>
+
+                <p>
+                    This involved creating custom schematic symbols
+                    and footprints, selecting components, and figuring
+                    out how to fit everything onto a relatively small
+                    board. Component height, connector placement, and
+                    routing all had to be taken into account.
+                </p>
+
+                <figure class="article-media">
+
+                    <img
+                        src="../assets/images/battery-monitor-layout.png"
+                        alt="Two-layer battery monitor PCB layout in Altium Designer"
+                        loading="lazy"
+                    >
+
+                    <figcaption>
+                        PCB layout designed in Altium Designer.
+                    </figcaption>
+
+                </figure>
+
+                <figure class="article-media">
+
+                    <img
+                        src="../assets/images/battery-monitor-pcb.jpg"
+                        alt="Assembled battery monitor printed circuit board"
+                        loading="lazy"
+                    >
+
+                    <figcaption>
+                        The assembled PCB, with the main components
+                        soldered in place.
+                    </figcaption>
+
+                </figure>
+
+            </section>
+
+
+            <!-- ENCLOSURE -->
+
+            <section>
+
+                <h2>Enclosure Design</h2>
+
+                <p>
+                    Alongside the electronics, I also worked on the
+                    mechanical side of the project. I designed a
+                    compact enclosure to accommodate the PCB and
+                    its connectors, keeping the available space
+                    and component dimensions in mind.
+                </p>
+
+                <figure class="article-media">
+
+                    <img
+                        src="../assets/images/battery-monitor-enclosure-1.PNG"
+                        alt="3D CAD model of the battery monitor enclosure"
+                        loading="lazy"
+                    >
+
+                    <figcaption>
+                        3D model of the enclosure designed to house
+                        the electronics.
+                    </figcaption>
+
+                </figure>
+
+                <p>
+                    It was a nice change of pace from circuit design
+                    and firmware, and another opportunity to work
+                    through the practical constraints of turning
+                    an electronic design into a physical device.
+                </p>
+
+            </section>
+
+
+            <!-- FIRMWARE -->
+
+            <section>
+
+                <h2>Firmware and Power Optimisation</h2>
+
+                <p>
+                    The firmware was developed in C using ESP-IDF
+                    and PlatformIO. One of the main challenges
+                    was keeping power consumption low without
+                    sacrificing BLE connectivity.
+                </p>
+
+                <p>
+                    I configured modem sleep and investigated
+                    the behaviour of different Bluetooth stacks.
+                    There was quite a bit of trial and error involved,
+                    but through repeated measurements and adjustments,
+                    I managed to bring average BLE advertising and
+                    disconnected power consumption below 1 mA.
+                </p>
+
+                <p>
+                    I also implemented and tested different configurable measurement
+                    and filtering functions, including rolling
+                    averages, spike detection, zero-current correction,
+                    and exponential moving averages. Sampling rates
+                    and measurement parameters could be configured
+                    and stored in non-volatile memory.
+                </p>
+
+            </section>
+
+
+            <!-- TESTING AND DEBUGGING -->
+
+            <section>
+
+                <h2>Testing and Debugging</h2>
+
+                <p>
+                    A fair amount of the internship was spent in
+                    the lab, measuring things, changing things,
+                    and trying to work out why something wasn't
+                    behaving as expected.
+                </p>
+
+                <p>
+                    I used laboratory power supplies, programmable
+                    electronic loads, oscilloscopes, and multimeters
+                    to characterise the measurement circuitry.
+                    I tested the ADC across different gain and
+                    oversampling ratio settings to see how its
+                    performance changed across different current ranges.
+                </p>
+
+                <p>
+                    One particularly frustrating issue involved
+                    the microcontroller's behaviour during sleep.
+                    Some GPIO pins continued to leak voltage even
+                    when configured with pull-downs. The SCLK line
+                    was especially troublesome, as it affected
+                    the MOSFET controlling power to parts of the
+                    measurement circuit.
+                </p>
+
+                <p>
+                    It took a fair bit of investigation to track
+                    down the problem. What initially looked like
+                    an issue with the power switching circuitry
+                    turned out to be related to the microcontroller's
+                    pin behaviour in sleep mode. A good reminder
+                    that things don't always behave quite as
+                    expected once you get them onto a physical board.
+                </p>
+
+            </section>
+
+
+            <!-- RESULTS -->
+
+            <section>
+
+                <h2>Results</h2>
+
+                <p>
+                    By the end of the internship, I had developed
+                    and tested the battery monitoring prototype,
+                    designed its PCB and enclosure, and implemented
+                    the main firmware functionality.
+                </p>
+
+                <ul>
+                    <li>
+                        Achieved average BLE advertising and
+                        disconnected power consumption below 1 mA.
+                    </li>
+
+                    <li>
+                        Achieved approximately 0.5% measurement
+                        accuracy below 10 A and approximately 1%
+                        above 10 A during prototype testing.
+                    </li>
+
+                    <li>
+                        Tested current measurements across a range
+                        of 0–100 A.
+                    </li>
+
+                    <li>
+                        Designed a custom two-layer PCB in
+                        Altium Designer.
+                    </li>
+
+                    <li>
+                        Developed configurable firmware for
+                        measurement, filtering, and communication.
+                    </li>
+
+                    <li>
+                        Designed a 3D enclosure for the electronics.
+                    </li>
+                </ul>
+
+            </section>
+
+
+            <!-- TECHNOLOGIES -->
+
+            <section>
+
+                <h2>Technologies and Tools</h2>
+
+                <p>
+                    C · ESP-IDF · PlatformIO · ESP32-C3 · BLE ·
+                    SPI · MCP3561 ADC · Altium Designer · PCB Design ·
+                    CAD · Oscilloscope · Digital Multimeter ·
+                    Programmable Electronic Load · SMD and
+                    Through-Hole Soldering
+                </p>
+
+            </section>
+
+
+            <!-- ARTICLE FOOTER -->
+
+            <div class="article-end">
+
+                <a href="../projects.html" class="button">
+                    Back to Projects
+                </a>
+
+                <a href="../index.html#contact" class="text-link">
+                    Get in Touch →
+                </a>
+
+            </div>
+
+
+        </article>
+
+    </main>
+
+
+    <!-- FOOTER -->
+
+    <footer class="site-footer">
+
+        <div class="footer-container">
+
+            <span>© <span data-year></span> Nguyen Le</span>
+
+            <a href="#top">Go to top ↑</a>
+
+        </div>
+
+    </footer>
+
+</body>
+</html>
